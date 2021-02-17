@@ -1,0 +1,10 @@
+C:\Users\ssummers\RiderProjects\graf\graf\bin\Debug\graf.exe.config
+C:\Users\ssummers\RiderProjects\graf\graf\bin\Debug\graf.exe
+C:\Users\ssummers\RiderProjects\graf\graf\bin\Debug\graf.pdb
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.csprojAssemblyReference.cache
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.Properties.Resources.resources
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.csproj.GenerateResource.cache
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.csproj.CoreCompileInputs.cache
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.exe
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.pdb
+C:\Users\ssummers\RiderProjects\graf\graf\obj\Debug\graf.Form1.resources
