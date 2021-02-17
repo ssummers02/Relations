@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace Relations_project
 {
@@ -35,6 +36,9 @@ namespace Relations_project
             this.grafPictureBox = new System.Windows.Forms.PictureBox();
             this.listXComboBox = new System.Windows.Forms.ComboBox();
             this.listYComboBox = new System.Windows.Forms.ComboBox();
+            this.operComboBox = new System.Windows.Forms.ComboBox();
+            this.operTextBox = new System.Windows.Forms.TextBox();
+
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize) (this.grafPictureBox)).BeginInit();
@@ -48,6 +52,15 @@ namespace Relations_project
             this.grafPictureBox.Size = new System.Drawing.Size(400, 400);
             this.grafPictureBox.TabIndex = 1;
             this.grafPictureBox.TabStop = false;
+            // 
+            // operTextBox
+            // 
+            this.operTextBox.Name = "Oper";
+            this.operTextBox.Location = new Point(30 + 40  + 30, 90);
+            this.operTextBox.Size = new System.Drawing.Size(25, 20);
+            this.operTextBox.TextAlign = HorizontalAlignment.Center;
+            this.operTextBox.Text = "0";
+            this.operTextBox.KeyPress += KeyPress;
             // 
             // listXComboBox
             // 
@@ -70,7 +83,17 @@ namespace Relations_project
             this.listYComboBox.Size = new System.Drawing.Size(40, 20);
             this.listYComboBox.TabIndex = 6;
             this.listYComboBox.SelectedIndexChanged += ListYComboBoxOnSelectedIndexChanged;
-            
+            // 
+            // operComboBox
+            // 
+            this.operComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.operComboBox.FormattingEnabled = true;
+            this.operComboBox.Items.AddRange(new object[] {"X+Y", "X-Y", "X*Y", "X/Y", "X%Y", "X<Y", "X<=Y", "X==Y", "X!=Y", "X>Y", "X>=Y"});
+            this.operComboBox.Location = new System.Drawing.Point(20, 20+70);
+            this.operComboBox.Name = "operComboBox";
+            this.operComboBox.Size = new System.Drawing.Size(70, 20);
+            this.operComboBox.TabIndex = 6;
+            this.operComboBox.SelectedIndexChanged += OperComboBoxOnSelectedIndexChanged;
             // 
             // xLabel
             // 
@@ -101,6 +124,8 @@ namespace Relations_project
             this.Controls.Add(this.yLabel);
             this.Controls.Add(this.listXComboBox);
             this.Controls.Add(this.listYComboBox);
+            this.Controls.Add(this.operComboBox);
+
             this.Controls.Add(this.grafPictureBox);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
@@ -114,6 +139,9 @@ namespace Relations_project
         private System.Windows.Forms.Label yLabel;
         private System.Windows.Forms.ComboBox listYComboBox;
         private System.Windows.Forms.ComboBox listXComboBox;
+        private System.Windows.Forms.ComboBox operComboBox;
+        private System.Windows.Forms.TextBox operTextBox;
+
         private System.Windows.Forms.PictureBox grafPictureBox;
         #endregion
     }

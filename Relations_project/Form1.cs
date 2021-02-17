@@ -23,6 +23,7 @@ namespace Relations_project
             InitializeComponent();
             listXComboBox.SelectedIndex = 0;
             listYComboBox.SelectedIndex = 0;
+            operComboBox.SelectedIndex = 7;
         }
 
 
@@ -70,12 +71,6 @@ namespace Relations_project
                 PaintText(points, graphics, i);
         }
 
-        private void KeyPress(object sender, KeyPressEventArgs e)
-        {
-            char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
-                e.Handled = true;
-        }
 
         private void creatGrafButton_Click(object sender, EventArgs e)
         {
@@ -87,24 +82,6 @@ namespace Relations_project
 
             grafPictureBox.Refresh();
         }
-        
-
-        /*
-        private void PrintsubgraphsCountLabel(Graph g)
-        {
-            subgraphsCountLabel = new Label();
-            subgraphsCountLabel.AutoSize = true;
-            subgraphsCountLabel.BackColor = Color.Transparent;
-            subgraphsCountLabel.Font = new Font("Times New Roman", 14F, FontStyle.Bold);
-            subgraphsCountLabel.ForeColor = Color.Gray;
-            subgraphsCountLabel.Location = new Point(20, 20 + 35 * (countGraf + 3));
-            subgraphsCountLabel.Name = "subgraphsCountLabel";
-            subgraphsCountLabel.Size = new Size(200, 19);
-            subgraphsCountLabel.Text = $@"Количество подграфов: {g.SubgraphsCount()}";
-            this.Controls.Add(subgraphsCountLabel);
-        }
-        */
-
 
         private void PaintText(PointF[] points, Graphics graphics, int i)
         {
@@ -116,6 +93,12 @@ namespace Relations_project
             graphics.DrawString(text, f, Brushes.FloralWhite, rect);
         }
 
+        private void KeyPress(object sender, KeyPressEventArgs e)
+        {
+            char number = e.KeyChar;
+            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+                e.Handled = true;
+        }
 
         private void ListYComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
@@ -175,6 +158,14 @@ namespace Relations_project
                 xListTextBoxes.Add(tempTextBox);
                 Controls.Add(xListTextBoxes[i]);
             }
+        }
+
+        private void OperComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (operComboBox.SelectedIndex > 4)
+                Controls.Add(operTextBox);
+            else
+                Controls.Remove(operTextBox);
         }
     }
 }
