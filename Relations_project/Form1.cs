@@ -8,13 +8,13 @@ namespace Relations_project
     public partial class Form1 : Form
     {
         private int countGraf = 10;
-        private int check;
         private List<int> xList = new List<int>();
         private List<int> yList = new List<int>();
 
         List<List<int>> list = new List<List<int>>();
         List<TextBox> xListTextBoxes = new List<TextBox>();
         List<TextBox> yListTextBoxes = new List<TextBox>();
+        List<List<TextBox>> matrixList = new List<List<TextBox>>();
         int countX = 1;
         int countY = 1;
 
@@ -24,6 +24,16 @@ namespace Relations_project
             listXComboBox.SelectedIndex = 0;
             listYComboBox.SelectedIndex = 0;
             operComboBox.SelectedIndex = 7;
+
+            for (int i = 0; i < 10; i++)
+            {
+                list.Add(new List<int>());
+
+                for (int j = 0; j < 10; j++)
+                {
+                    list[i].Add(0);
+                }
+            }
         }
 
 
@@ -72,7 +82,7 @@ namespace Relations_project
         }
 
 
-        private void creatGrafButton_Click(object sender, EventArgs e)
+        private void creatGrafButton_Click()
         {
             if (grafPictureBox.Image != null)
             {
@@ -93,7 +103,7 @@ namespace Relations_project
             graphics.DrawString(text, f, Brushes.FloralWhite, rect);
         }
 
-        private void KeyPress(object sender, KeyPressEventArgs e)
+        private new void KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
             if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
@@ -103,14 +113,17 @@ namespace Relations_project
         private void ListYComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
             int x = 30 + 35 * 2;
-            int y = 20 + 35;
+            int y = 20 + 25;
 
             for (int i = 0; i < yListTextBoxes.Count; i++)
             {
                 Controls.Remove(yListTextBoxes[i]);
             }
 
+            DeleteControls();
+
             yListTextBoxes.Clear();
+
             countY = Convert.ToInt32(listYComboBox.SelectedItem.ToString());
 
             for (int i = 0; i < countY; i++)
@@ -118,7 +131,7 @@ namespace Relations_project
                 TextBox tempTextBox = new TextBox()
                 {
                     Name = Convert.ToString(i),
-                    Location = new Point(x + 30 * i, y),
+                    Location = new Point(x, y + 25 * i),
                     Size = new System.Drawing.Size(25, 20),
                     TextAlign = HorizontalAlignment.Center,
                     Text = "0"
@@ -132,7 +145,7 @@ namespace Relations_project
 
         private void ListXComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
-            int x = 30 + 35 * 2;
+            int x = 25 + 35 * 3;
             int y = 20;
 
             for (int i = 0; i < xListTextBoxes.Count; i++)
@@ -140,7 +153,10 @@ namespace Relations_project
                 Controls.Remove(xListTextBoxes[i]);
             }
 
+            DeleteControls();
+
             xListTextBoxes.Clear();
+
 
             countX = Convert.ToInt32(listXComboBox.SelectedItem.ToString());
 
@@ -162,10 +178,168 @@ namespace Relations_project
 
         private void OperComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
-            if (operComboBox.SelectedIndex > 4)
+            DeleteControls();
+            if (operComboBox.SelectedIndex <= 4)
                 Controls.Add(operTextBox);
             else
                 Controls.Remove(operTextBox);
+        }
+
+        private void DeleteControls()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    string a = "i" + Convert.ToString(i) + "j" + Convert.ToString(j);
+                    this.Controls.RemoveByKey(a);
+                }
+
+                matrixList.Clear();
+            }
+        }
+
+        private void CreateMatrixTextBoxes()
+        {
+            for (int i = 0; i < countY; i++)
+            {
+                matrixList.Add(new List<TextBox>());
+
+                for (int j = 0; j < countX; j++)
+                {
+                    matrixList.Add(new List<TextBox>());
+                    TextBox tempTextBox = new TextBox()
+                    {
+                        Name = "i" + Convert.ToString(i) + "j" + Convert.ToString(j),
+                        Location = new Point(60 + 35 * 2 + 30 * j, 45 + 25 * i),
+                        Size = new System.Drawing.Size(25, 20),
+                        Text = (list[i][j] == 1) ? "T" : "F",
+                        TextAlign = HorizontalAlignment.Center
+                    };
+                    tempTextBox.KeyPress += KeyPress;
+
+                    matrixList[i].Add(tempTextBox);
+                    Controls.Add(matrixList[i][j]);
+                }
+            }
+        }
+
+        private int ListChecker()
+        {
+            xList.Clear();
+            yList.Clear();
+
+            for (int j = 0; j < countX; j++)
+            {
+                int number;
+                bool success = Int32.TryParse(xListTextBoxes[j].Text, out number);
+
+                if (success)
+                    xList.Add(number);
+                else
+                {
+                    MessageBox.Show($@"Неверная матрица смежности!");
+                    return 1;
+                }
+            }
+
+            for (int j = 0; j < countY; j++)
+            {
+                int number;
+                bool success = Int32.TryParse(yListTextBoxes[j].Text, out number);
+
+                if (success)
+                    yList.Add(number);
+                else
+                {
+                    MessageBox.Show($@"Неверная матрица смежности!");
+                    return 1;
+                }
+            }
+
+            return 0;
+        }
+
+        private void CreateButtonOnClick(object sender, EventArgs e)
+        {
+            DeleteControls();
+            ListChecker();
+            FillingList();
+            CreateMatrixTextBoxes();
+            creatGrafButton_Click();
+            PictureBoxPaint();
+        }
+
+        private void FillingList()
+        {
+            int index = operComboBox.SelectedIndex;
+
+            for (int j = 0; j < countY; j++)
+            {
+                for (int i = 0; i < countX; i++)
+                {
+                    Console.WriteLine($"{i} {j}");
+                    list[j][i] = 0;
+
+                    switch (index)
+                    {
+                        case 0:
+                            if (xList[i] + yList[j] == Convert.ToInt32(operTextBox.Text))
+                                list[j][i] = 1;
+                            break;
+                        case 1:
+                            if (xList[i] - yList[j] == Convert.ToInt32(operTextBox.Text))
+                                list[j][i] = 1;
+                            break;
+                        case 2:
+                            if (xList[i] * yList[j] == Convert.ToInt32(operTextBox.Text))
+                                list[j][i] = 1;
+
+                            break;
+                        case 3:
+                            if (xList[i] / yList[j] == Convert.ToInt32(operTextBox.Text))
+                                list[j][i] = 1;
+                            break;
+                        case 4:
+                            if (xList[i] % yList[j] == Convert.ToInt32(operTextBox.Text))
+                                list[j][i] = 1;
+
+
+                            break;
+                        case 5:
+                            if (xList[i] < yList[j])
+                                list[j][i] = 1;
+
+                            break;
+                        case 6:
+                            if (xList[i] <= yList[j])
+                                list[j][i] = 1;
+
+                            break;
+
+                        case 7:
+                            if (xList[i] == yList[j])
+                                list[j][i] = 1;
+
+                            break;
+                        case 8:
+                            if (xList[i] != yList[j])
+                                list[j][i] = 1;
+
+                            break;
+                        case 9:
+                            if (xList[i] > yList[j])
+                                list[j][i] = 1;
+
+                            break;
+                        case 10:
+                            if (xList[i] >= yList[j])
+                                list[j][i] = 1;
+
+                            break;
+                    }
+                }
+            }
         }
     }
 }

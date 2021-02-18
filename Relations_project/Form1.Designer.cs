@@ -38,6 +38,7 @@ namespace Relations_project
             this.listYComboBox = new System.Windows.Forms.ComboBox();
             this.operComboBox = new System.Windows.Forms.ComboBox();
             this.operTextBox = new System.Windows.Forms.TextBox();
+            this.createButton = new System.Windows.Forms.Button();
 
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
@@ -47,16 +48,16 @@ namespace Relations_project
             // grafPictureBox
             // 
             this.grafPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.grafPictureBox.Location = new System.Drawing.Point(400, 12);
+            this.grafPictureBox.Location = new System.Drawing.Point(420, 20);
             this.grafPictureBox.Name = "grafPictureBox";
-            this.grafPictureBox.Size = new System.Drawing.Size(400, 400);
+            this.grafPictureBox.Size = new System.Drawing.Size(380, 380);
             this.grafPictureBox.TabIndex = 1;
             this.grafPictureBox.TabStop = false;
             // 
             // operTextBox
             // 
             this.operTextBox.Name = "Oper";
-            this.operTextBox.Location = new Point(30 + 40  + 30, 90);
+            this.operTextBox.Location = new Point(30 + 20  , 95);
             this.operTextBox.Size = new System.Drawing.Size(25, 20);
             this.operTextBox.TextAlign = HorizontalAlignment.Center;
             this.operTextBox.Text = "0";
@@ -78,7 +79,7 @@ namespace Relations_project
             this.listYComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.listYComboBox.FormattingEnabled = true;
             this.listYComboBox.Items.AddRange(new object[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10});
-            this.listYComboBox.Location = new System.Drawing.Point(50, 20+35);
+            this.listYComboBox.Location = new System.Drawing.Point(50, 20+25);
             this.listYComboBox.Name = "listYComboBox";
             this.listYComboBox.Size = new System.Drawing.Size(40, 20);
             this.listYComboBox.TabIndex = 6;
@@ -89,26 +90,35 @@ namespace Relations_project
             this.operComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.operComboBox.FormattingEnabled = true;
             this.operComboBox.Items.AddRange(new object[] {"X+Y", "X-Y", "X*Y", "X/Y", "X%Y", "X<Y", "X<=Y", "X==Y", "X!=Y", "X>Y", "X>=Y"});
-            this.operComboBox.Location = new System.Drawing.Point(20, 20+70);
+            this.operComboBox.Location = new System.Drawing.Point(20, 70);
             this.operComboBox.Name = "operComboBox";
-            this.operComboBox.Size = new System.Drawing.Size(70, 20);
+            this.operComboBox.Size = new System.Drawing.Size(60, 20);
             this.operComboBox.TabIndex = 6;
             this.operComboBox.SelectedIndexChanged += OperComboBoxOnSelectedIndexChanged;
+            // 
+            // createButton
+            // 
+            this.createButton.Location = new System.Drawing.Point(20, 120);
+            this.createButton.Name = "createButton";
+            this.createButton.Size = new System.Drawing.Size(70, 20);
+            this.createButton.TabIndex = 10;
+            this.createButton.Text = "Решить";
+            this.createButton.Click += CreateButtonOnClick;
             // 
             // xLabel
             // 
             this.xLabel.Location = new System.Drawing.Point(20, 20);
             this.xLabel.Name = "xLabel";
-            this.xLabel.Size = new System.Drawing.Size(30, 20);
+            this.xLabel.Size = new System.Drawing.Size(25, 20);
             this.xLabel.TabIndex = 11;
             this.xLabel.Text = "X";
             this.xLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // yLabel
             // 
-            this.yLabel.Location = new System.Drawing.Point(20, 20+35);
+            this.yLabel.Location = new System.Drawing.Point(20, 20+25);
             this.yLabel.Name = "yLabel";
-            this.yLabel.Size = new System.Drawing.Size(30, 20);
+            this.yLabel.Size = new System.Drawing.Size(25, 20);
             this.yLabel.TabIndex = 12;
             this.yLabel.Text = "Y";
             this.yLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -125,6 +135,7 @@ namespace Relations_project
             this.Controls.Add(this.listXComboBox);
             this.Controls.Add(this.listYComboBox);
             this.Controls.Add(this.operComboBox);
+            this.Controls.Add(this.createButton);
 
             this.Controls.Add(this.grafPictureBox);
             this.Cursor = System.Windows.Forms.Cursors.Default;
@@ -141,6 +152,8 @@ namespace Relations_project
         private System.Windows.Forms.ComboBox listXComboBox;
         private System.Windows.Forms.ComboBox operComboBox;
         private System.Windows.Forms.TextBox operTextBox;
+        private System.Windows.Forms.Button createButton;
+
 
         private System.Windows.Forms.PictureBox grafPictureBox;
         #endregion
