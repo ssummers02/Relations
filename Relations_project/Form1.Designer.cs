@@ -48,9 +48,9 @@ namespace Relations_project
             // grafPictureBox
             // 
             this.grafPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.grafPictureBox.Location = new System.Drawing.Point(420, 20);
+            this.grafPictureBox.Location = new System.Drawing.Point(420, 0);
             this.grafPictureBox.Name = "grafPictureBox";
-            this.grafPictureBox.Size = new System.Drawing.Size(380, 380);
+            this.grafPictureBox.Size = new System.Drawing.Size(380, 560);
             this.grafPictureBox.TabIndex = 1;
             this.grafPictureBox.TabStop = false;
             // 
@@ -129,7 +129,7 @@ namespace Relations_project
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::Relations_project.Properties.Resources.color_2174049_1280;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(800, 500);
+            this.ClientSize = new System.Drawing.Size(800, 525);
             this.Controls.Add(this.xLabel);
             this.Controls.Add(this.yLabel);
             this.Controls.Add(this.listXComboBox);

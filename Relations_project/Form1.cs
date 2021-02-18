@@ -10,7 +10,6 @@ namespace Relations_project
         private int countGraf = 10;
         private List<int> xList = new List<int>();
         private List<int> yList = new List<int>();
-
         List<List<int>> list = new List<List<int>>();
         List<TextBox> xListTextBoxes = new List<TextBox>();
         List<TextBox> yListTextBoxes = new List<TextBox>();
@@ -37,20 +36,45 @@ namespace Relations_project
         }
 
 
-        private void PaintLine(Graphics graphics, Pen pen, PointF[] points)
+        private void PaintLine(Graphics graphics, PointF[] Xpoints, PointF[] Ypoints)
         {
-            for (int i = 0; i < countGraf; i++)
+            for (int i = 0; i < countX; i++)
             {
-                points[i].X += 15;
-                points[i].Y += 15;
+                Xpoints[i].X += 15;
+                Xpoints[i].Y += 15;
             }
 
-            for (int i = 0; i < countGraf; i++)
+            for (int i = 0; i < countY; i++)
             {
-                for (int j = 0; j < countGraf; j++)
+                Ypoints[i].X += 15;
+                Ypoints[i].Y += 15;
+            }
+
+            List<Pen> pens = new List<Pen>()
+            {
+                new Pen(Color.White, 5.0F),
+                new Pen(Color.Indigo, 5.0F),
+                new Pen(Color.YellowGreen, 5.0F),
+                new Pen(Color.DarkGoldenrod, 5.0F),
+                new Pen(Color.BlueViolet, 5.0F),
+                new Pen(Color.RosyBrown, 5.0F),
+                new Pen(Color.Gray, 5.0F),
+                new Pen(Color.Peru, 5.0F),
+                new Pen(Color.Olive, 5.0F),
+                new Pen(Color.PaleGreen, 5.0F)
+            };
+
+            for (int i = 0; i < countY; i++)
+            {
+                for (int j = 0; j < countX; j++)
                 {
-                    if (list[i][j] > 0)
-                        graphics.DrawLine(pen, points[i], points[j]);
+                    if (list[i][j] == 1)
+                    {
+                        Ypoints[i].X -= 15;
+                        pens[j].EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+                        graphics.DrawLine(pens[j], Xpoints[j], Ypoints[i]);
+                        Ypoints[i].X += 15;
+                    }
                 }
             }
         }
@@ -58,31 +82,39 @@ namespace Relations_project
         private void PictureBoxPaint()
         {
             grafPictureBox.Refresh();
-            double alfa = 2 * Math.PI / countGraf;
-            PointF[] points = new PointF[countGraf];
+            PointF[] Xpoints = new PointF[countX];
+            PointF[] Ypoints = new PointF[countY];
             Graphics graphics = grafPictureBox.CreateGraphics();
             Brush brush = new SolidBrush(Color.Blue);
-            Pen pen = new Pen(Color.Blue, 3F);
+            Pen pen = new Pen(Color.Blue, 5.0F);
 
-            for (int i = 0; i < countGraf; i++)
+            for (int i = 0; i < countX; i++)
             {
-                int x = Convert.ToInt32(200 + 150 * Math.Cos(alfa * i));
-                int y = Convert.ToInt32(200 + 150 * Math.Sin(alfa * i));
-                if (countGraf == 1)
-                    x = y = 200;
-                points[i] = new PointF(x, y);
-                graphics.DrawEllipse(pen, points[i].X, points[i].Y, 30, 30);
-                graphics.FillEllipse(brush, new Rectangle((int) points[i].X, (int) points[i].Y, 30, 30));
+                int x = 50;
+                int y = 20 + 50 * i;
+                Xpoints[i] = new PointF(x, y);
+                graphics.DrawEllipse(pen, Xpoints[i].X, Xpoints[i].Y, 30, 30);
+                graphics.FillEllipse(brush, new Rectangle((int) Xpoints[i].X, (int) Xpoints[i].Y, 30, 30));
             }
 
+            for (int i = 0; i < countY; i++)
+            {
+                int x = 300;
+                int y = 20 + 50 * i;
+                Ypoints[i] = new PointF(x, y);
+                graphics.DrawEllipse(pen, Ypoints[i].X, Ypoints[i].Y, 30, 30);
+                graphics.FillEllipse(brush, new Rectangle((int) Ypoints[i].X, (int) Ypoints[i].Y, 30, 30));
+            }
 
-            PaintLine(graphics, pen, points);
-            for (int i = 0; i < countGraf; i++)
-                PaintText(points, graphics, i);
+            PaintLine(graphics, Xpoints, Ypoints);
+            for (int i = 0; i < countX; i++)
+                PaintText(Xpoints, graphics, i, xList);
+            for (int i = 0; i < countY; i++)
+                PaintText(Ypoints, graphics, i, yList);
         }
 
 
-        private void creatGrafButton_Click()
+        private void DisposeImages()
         {
             if (grafPictureBox.Image != null)
             {
@@ -93,10 +125,10 @@ namespace Relations_project
             grafPictureBox.Refresh();
         }
 
-        private void PaintText(PointF[] points, Graphics graphics, int i)
+        private void PaintText(PointF[] points, Graphics graphics, int i, List<int> list)
         {
             var f = new Font(Font.FontFamily, 15);
-            string text = Convert.ToString(i + 1);
+            string text = Convert.ToString(list[i]);
             var size = graphics.MeasureString(text, f);
             var pt = new PointF(points[i].X + 7 - 15, points[i].Y + 3 - 15);
             var rect = new RectangleF(pt, size);
@@ -106,12 +138,14 @@ namespace Relations_project
         private new void KeyPress(object sender, KeyPressEventArgs e)
         {
             char number = e.KeyChar;
-            if (!Char.IsDigit(number) && number != 8) // цифры и клавиша BackSpace
+            if (!Char.IsDigit(number) && number != 8 && number != 45)
                 e.Handled = true;
         }
 
         private void ListYComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
+            DisposeImages();
+
             int x = 30 + 35 * 2;
             int y = 20 + 25;
 
@@ -145,6 +179,8 @@ namespace Relations_project
 
         private void ListXComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
+            DisposeImages();
+
             int x = 25 + 35 * 3;
             int y = 20;
 
@@ -178,6 +214,8 @@ namespace Relations_project
 
         private void OperComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
+            DisposeImages();
+
             DeleteControls();
             if (operComboBox.SelectedIndex <= 4)
                 Controls.Add(operTextBox);
@@ -224,7 +262,7 @@ namespace Relations_project
             }
         }
 
-        private int ListChecker()
+        private bool ListChecker()
         {
             xList.Clear();
             yList.Clear();
@@ -238,8 +276,8 @@ namespace Relations_project
                     xList.Add(number);
                 else
                 {
-                    MessageBox.Show($@"Неверная матрица смежности!");
-                    return 1;
+                    MessageBox.Show($@"Неверные значения!");
+                    return false;
                 }
             }
 
@@ -252,25 +290,27 @@ namespace Relations_project
                     yList.Add(number);
                 else
                 {
-                    MessageBox.Show($@"Неверная матрица смежности!");
-                    return 1;
+                    MessageBox.Show($@"Неверные значения!");
+                    return false;
                 }
             }
 
-            return 0;
+            return true;
         }
 
         private void CreateButtonOnClick(object sender, EventArgs e)
         {
             DeleteControls();
-            ListChecker();
-            FillingList();
-            CreateMatrixTextBoxes();
-            creatGrafButton_Click();
-            PictureBoxPaint();
+            DisposeImages();
+
+            if ( ListChecker()&& FillingList())
+            {
+                CreateMatrixTextBoxes();
+                PictureBoxPaint();
+            }
         }
 
-        private void FillingList()
+        private bool FillingList()
         {
             int index = operComboBox.SelectedIndex;
 
@@ -278,7 +318,6 @@ namespace Relations_project
             {
                 for (int i = 0; i < countX; i++)
                 {
-                    Console.WriteLine($"{i} {j}");
                     list[j][i] = 0;
 
                     switch (index)
@@ -294,52 +333,56 @@ namespace Relations_project
                         case 2:
                             if (xList[i] * yList[j] == Convert.ToInt32(operTextBox.Text))
                                 list[j][i] = 1;
-
                             break;
                         case 3:
+                            if (yList[j] == 0)
+                            {
+                                MessageBox.Show("НА НОЛЬ НЕ ДЕЛИТЬ!");
+                                return false;
+                            }
+
                             if (xList[i] / yList[j] == Convert.ToInt32(operTextBox.Text))
                                 list[j][i] = 1;
                             break;
                         case 4:
+                            if (yList[j] == 0)
+                            {
+                                MessageBox.Show("НА НОЛЬ НЕ ДЕЛИТЬ!");
+                                return false;
+                            }
+
                             if (xList[i] % yList[j] == Convert.ToInt32(operTextBox.Text))
                                 list[j][i] = 1;
-
-
                             break;
                         case 5:
                             if (xList[i] < yList[j])
                                 list[j][i] = 1;
-
                             break;
                         case 6:
                             if (xList[i] <= yList[j])
                                 list[j][i] = 1;
-
                             break;
-
                         case 7:
                             if (xList[i] == yList[j])
                                 list[j][i] = 1;
-
                             break;
                         case 8:
                             if (xList[i] != yList[j])
                                 list[j][i] = 1;
-
                             break;
                         case 9:
                             if (xList[i] > yList[j])
                                 list[j][i] = 1;
-
                             break;
                         case 10:
                             if (xList[i] >= yList[j])
                                 list[j][i] = 1;
-
                             break;
                     }
                 }
             }
+
+            return true;
         }
     }
 }
