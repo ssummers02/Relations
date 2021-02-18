@@ -7,14 +7,30 @@ namespace Relations_project
 {
     public partial class Form1 : Form
     {
-        private List<int> xList = new List<int>();
-        private List<int> yList = new List<int>();
-        private List<List<int>> list = new List<List<int>>();
-        private List<TextBox> xListTextBoxes = new List<TextBox>();
-        private List<TextBox> yListTextBoxes = new List<TextBox>();
-        private List<List<TextBox>> matrixList = new List<List<TextBox>>();
+        private readonly List<int> xList = new List<int>();
+        private readonly List<int> yList = new List<int>();
+        private readonly List<List<int>> list = new List<List<int>>();
+        private readonly List<TextBox> xListTextBoxes = new List<TextBox>();
+        private readonly List<TextBox> yListTextBoxes = new List<TextBox>();
+        private readonly List<List<TextBox>> matrixList = new List<List<TextBox>>();
         private int countX = 1;
         private int countY = 1;
+        Brush brush = new SolidBrush(Color.Blue);
+        Pen pen = new Pen(Color.Blue, 5.0F);
+
+        readonly List<Pen> pens = new List<Pen>()
+        {
+            new Pen(Color.White, 5.0F),
+            new Pen(Color.Indigo, 5.0F),
+            new Pen(Color.PaleGreen, 5.0F),
+            new Pen(Color.YellowGreen, 5.0F),
+            new Pen(Color.DarkGoldenrod, 5.0F),
+            new Pen(Color.BlueViolet, 5.0F),
+            new Pen(Color.RosyBrown, 5.0F),
+            new Pen(Color.Gray, 5.0F),
+            new Pen(Color.Peru, 5.0F),
+            new Pen(Color.Olive, 5.0F),
+        };
 
         public Form1()
         {
@@ -34,34 +50,19 @@ namespace Relations_project
             }
         }
 
+        private void IncreaseValue(PointF[] points, int count)
+        {
+            for (int i = 0; i < points.Length; i++)
+            {
+                points[i].X += count;
+                points[i].Y += count;
+            }
+        }
 
         private void PaintLine(Graphics graphics, PointF[] xpoints, PointF[] ypoints)
         {
-            for (int i = 0; i < countX; i++)
-            {
-                xpoints[i].X += 15;
-                xpoints[i].Y += 15;
-            }
-
-            for (int i = 0; i < countY; i++)
-            {
-                ypoints[i].X += 15;
-                ypoints[i].Y += 15;
-            }
-
-            List<Pen> pens = new List<Pen>()
-            {
-                new Pen(Color.White, 5.0F),
-                new Pen(Color.Indigo, 5.0F),
-                new Pen(Color.YellowGreen, 5.0F),
-                new Pen(Color.DarkGoldenrod, 5.0F),
-                new Pen(Color.BlueViolet, 5.0F),
-                new Pen(Color.RosyBrown, 5.0F),
-                new Pen(Color.Gray, 5.0F),
-                new Pen(Color.Peru, 5.0F),
-                new Pen(Color.Olive, 5.0F),
-                new Pen(Color.PaleGreen, 5.0F)
-            };
+            IncreaseValue(xpoints, 15);
+            IncreaseValue(ypoints, 15);
 
             for (int i = 0; i < countY; i++)
             {
@@ -76,36 +77,42 @@ namespace Relations_project
                     }
                 }
             }
+
+            IncreaseValue(xpoints, -15);
+            IncreaseValue(ypoints, -15);
+        }
+
+        private void CreatePointF(int x, int count, PointF[] points)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                int y = 20 + 50 * i;
+                points[i] = new PointF(x, y);
+            }
+        }
+
+        private void DrawEllipseInPictureBox(int x, int count, Graphics graphics, PointF[] points)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                graphics.DrawEllipse(pen, points[i].X, points[i].Y, 30, 30);
+                graphics.FillEllipse(brush, new Rectangle((int) points[i].X, (int) points[i].Y, 30, 30));
+            }
+
+            IncreaseValue(points, 15);
         }
 
         private void PictureBoxPaint()
         {
             grafPictureBox.Refresh();
-            PointF[] xpoints = new PointF[countX];
-            PointF[] ypoints = new PointF[countY];
-            Graphics graphics = grafPictureBox.CreateGraphics();
-            Brush brush = new SolidBrush(Color.Blue);
-            Pen pen = new Pen(Color.Blue, 5.0F);
-
-            for (int i = 0; i < countX; i++)
-            {
-                int x = 50;
-                int y = 20 + 50 * i;
-                xpoints[i] = new PointF(x, y);
-                graphics.DrawEllipse(pen, xpoints[i].X, xpoints[i].Y, 30, 30);
-                graphics.FillEllipse(brush, new Rectangle((int) xpoints[i].X, (int) xpoints[i].Y, 30, 30));
-            }
-
-            for (int i = 0; i < countY; i++)
-            {
-                int x = 300;
-                int y = 20 + 50 * i;
-                ypoints[i] = new PointF(x, y);
-                graphics.DrawEllipse(pen, ypoints[i].X, ypoints[i].Y, 30, 30);
-                graphics.FillEllipse(brush, new Rectangle((int) ypoints[i].X, (int) ypoints[i].Y, 30, 30));
-            }
-
+            var xpoints = new PointF[countX];
+            var ypoints = new PointF[countY];
+            var graphics = grafPictureBox.CreateGraphics();
+            CreatePointF(50, countX, xpoints);
+            CreatePointF(300, countY, ypoints);
             PaintLine(graphics, xpoints, ypoints);
+            DrawEllipseInPictureBox(50, countX, graphics, xpoints);
+            DrawEllipseInPictureBox(300, countY, graphics, ypoints);
             for (var i = 0; i < countX; i++)
                 PaintText(xpoints, graphics, i, xList);
             for (var i = 0; i < countY; i++)
@@ -144,15 +151,10 @@ namespace Relations_project
         private void ListYComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
             DisposeImages();
-
             int x = 30 + 35 * 2;
             int y = 20 + 25;
-
-            for (int i = 0; i < yListTextBoxes.Count; i++)
-            {
-                Controls.Remove(yListTextBoxes[i]);
-            }
-
+            foreach (var t in yListTextBoxes)
+                Controls.Remove(t);
             DeleteControls();
 
             yListTextBoxes.Clear();
@@ -185,9 +187,7 @@ namespace Relations_project
 
             foreach (var t in xListTextBoxes)
                 Controls.Remove(t);
-
             DeleteControls();
-
             xListTextBoxes.Clear();
             countX = Convert.ToInt32(listXComboBox.SelectedItem.ToString());
 
@@ -210,7 +210,6 @@ namespace Relations_project
         private void OperComboBoxOnSelectedIndexChanged(object sender, EventArgs e)
         {
             DisposeImages();
-
             DeleteControls();
             if (operComboBox.SelectedIndex <= 4)
                 Controls.Add(operTextBox);
@@ -278,8 +277,7 @@ namespace Relations_project
 
             for (int j = 0; j < countY; j++)
             {
-                int number;
-                bool success = Int32.TryParse(yListTextBoxes[j].Text, out number);
+                bool success = Int32.TryParse(yListTextBoxes[j].Text, out var number);
 
                 if (success)
                     yList.Add(number);
@@ -307,7 +305,7 @@ namespace Relations_project
 
         private bool FillingList()
         {
-            int index = operComboBox.SelectedIndex;
+            var index = operComboBox.SelectedIndex;
 
             for (var j = 0; j < countY; j++)
             {
