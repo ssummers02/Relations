@@ -17,6 +17,43 @@ namespace Relations_project
         private int countY = 1;
         Brush brush = new SolidBrush(Color.Blue);
         Pen pen = new Pen(Color.Blue, 5.0F);
+        private List<string> pairslist = new List<string>();
+
+        private string createString()
+        {
+            var s = "";
+            var c = 1;
+
+            for (int i = 0; i < pairslist.Count; i++)
+            {
+                if (i + 1 != pairslist.Count)
+                    s += pairslist[i] + ", ";
+                else
+                    s += pairslist[i];
+
+                if (c % 8 == 0 && i != 0)
+                    s += "\n";
+                c++;
+            }
+            if (c >80)
+                this.ClientSize = new System.Drawing.Size(800, 600);
+
+            return s;
+        }
+
+        private void PrintPairsLabel()
+        {
+            PairsLabel = new Label();
+            PairsLabel.AutoSize = true;
+            PairsLabel.BackColor = Color.Transparent;
+            PairsLabel.Font = new Font("Times New Roman", 14F, FontStyle.Bold);
+            PairsLabel.ForeColor = Color.Gray;
+            PairsLabel.Location = new Point(20, 300);
+            PairsLabel.Name = "PairsLabel";
+            PairsLabel.Size = new Size(200, 20);
+            PairsLabel.Text = createString();
+            this.Controls.Add(PairsLabel);
+        }
 
         readonly List<Pen> pens = new List<Pen>()
         {
@@ -219,6 +256,9 @@ namespace Relations_project
 
         private void DeleteControls()
         {
+            Controls.Remove(PairsLabel);
+            pairslist.Clear();
+
             for (var i = 0; i < 10; i++)
             {
                 for (var j = 0; j < 10; j++)
@@ -248,6 +288,7 @@ namespace Relations_project
                         Text = list[i][j] == 1 ? "T" : "F",
                         TextAlign = HorizontalAlignment.Center
                     };
+
                     tempTextBox.KeyPress += KeyPress;
 
                     matrixList[i].Add(tempTextBox);
@@ -299,6 +340,7 @@ namespace Relations_project
             if (ListChecker() && FillingList())
             {
                 CreateMatrixTextBoxes();
+                PrintPairsLabel();
                 PictureBoxPaint();
             }
         }
@@ -317,15 +359,27 @@ namespace Relations_project
                     {
                         case 0:
                             if (xList[i] + yList[j] == Convert.ToInt32(operTextBox.Text))
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 1:
                             if (xList[i] - yList[j] == Convert.ToInt32(operTextBox.Text))
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 2:
                             if (xList[i] * yList[j] == Convert.ToInt32(operTextBox.Text))
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 3:
                             if (yList[j] == 0)
@@ -335,7 +389,11 @@ namespace Relations_project
                             }
 
                             if (xList[i] / yList[j] == Convert.ToInt32(operTextBox.Text))
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 4:
                             if (yList[j] == 0)
@@ -345,37 +403,71 @@ namespace Relations_project
                             }
 
                             if (xList[i] % yList[j] == Convert.ToInt32(operTextBox.Text))
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 5:
                             if (xList[i] < yList[j])
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 6:
                             if (xList[i] <= yList[j])
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 7:
                             if (xList[i] == yList[j])
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 8:
                             if (xList[i] != yList[j])
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 9:
                             if (xList[i] > yList[j])
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                         case 10:
                             if (xList[i] >= yList[j])
+                            {
                                 list[j][i] = 1;
+                                pairslist.Add($"({xList[i]};{yList[j]})");
+                            }
+
                             break;
                     }
                 }
             }
 
             return true;
+        }
+
+        private void ClearButtonOnClick(object sender, EventArgs e)
+        {
+            DeleteControls();
+            DisposeImages();
         }
     }
 }

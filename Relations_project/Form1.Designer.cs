@@ -39,7 +39,7 @@ namespace Relations_project
             this.operComboBox = new System.Windows.Forms.ComboBox();
             this.operTextBox = new System.Windows.Forms.TextBox();
             this.createButton = new System.Windows.Forms.Button();
-
+            this.clearButton = new System.Windows.Forms.Button();
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize) (this.grafPictureBox)).BeginInit();
@@ -48,7 +48,7 @@ namespace Relations_project
             // grafPictureBox
             // 
             this.grafPictureBox.BackColor = System.Drawing.Color.Transparent;
-            this.grafPictureBox.Location = new System.Drawing.Point(420, 0);
+            this.grafPictureBox.Location = new System.Drawing.Point(430, 0);
             this.grafPictureBox.Name = "grafPictureBox";
             this.grafPictureBox.Size = new System.Drawing.Size(380, 560);
             this.grafPictureBox.TabIndex = 1;
@@ -105,6 +105,15 @@ namespace Relations_project
             this.createButton.Text = "Решить";
             this.createButton.Click += CreateButtonOnClick;
             // 
+            // clearButton
+            // 
+            this.clearButton.Location = new System.Drawing.Point(20, 140);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(70, 20);
+            this.clearButton.TabIndex = 10;
+            this.clearButton.Text = "Очистить";
+            this.clearButton.Click += ClearButtonOnClick;
+            // 
             // xLabel
             // 
             this.xLabel.Location = new System.Drawing.Point(20, 20);
@@ -136,7 +145,7 @@ namespace Relations_project
             this.Controls.Add(this.listYComboBox);
             this.Controls.Add(this.operComboBox);
             this.Controls.Add(this.createButton);
-
+            this.Controls.Add(this.clearButton);
             this.Controls.Add(this.grafPictureBox);
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.DoubleBuffered = true;
@@ -153,6 +162,9 @@ namespace Relations_project
         private System.Windows.Forms.ComboBox operComboBox;
         private System.Windows.Forms.TextBox operTextBox;
         private System.Windows.Forms.Button createButton;
+        private System.Windows.Forms.Button clearButton;
+
+        private System.Windows.Forms.Label PairsLabel;
 
 
         private System.Windows.Forms.PictureBox grafPictureBox;
