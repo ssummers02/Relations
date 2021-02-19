@@ -35,7 +35,8 @@ namespace Relations_project
                     s += "\n";
                 c++;
             }
-            if (c >80)
+
+            if (c > 80)
                 this.ClientSize = new System.Drawing.Size(800, 600);
 
             return s;
